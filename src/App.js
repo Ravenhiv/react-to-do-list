@@ -2,23 +2,31 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {TodoForm, TodoList} from './components/todo';
-import {addTodo, generateId} from './libs/todoHelpers';
+import {addTodo, generateId, findById, toggleTodo, updateTodo} from './libs/todoHelpers';
+import {pipe, partial} from './libs/utils';
 
 class App extends Component {
 
   state = {
     todos: [
-      { id: 1, name: 'Learn JSX', isCompleted: true },
-      { id: 2, name: 'Build an Awesome App', isCompleted: false },
-      { id: 3, name: 'Ship It!', isCompleted: false }
+      { id: 1, name: 'Learn JSX', isComplete: true },
+      { id: 2, name: 'Build an Awesome App', isComplete: false },
+      { id: 3, name: 'Ship It!', isComplete: false }
     ],
     currentTodo: ''
+  }
+
+  handleToggle = (id) => {
+    const getUpdatedTodos = pipe(findById, toggleTodo,
+      partial(updateTodo, this.state.todos));
+    const updatedTodos = getUpdatedTodos(id, this.state.todos);
+    this.setState({todos: updatedTodos});
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
     const newId = generateId();
-    const newTodo = {id: newId, name: this.state.currentTodo, isCompleted: false};
+    const newTodo = {id: newId, name: this.state.currentTodo, isComplete: false};
     const updatedTodos = addTodo(this.state.todos, newTodo);
     this.setState({
       currentTodo: '',
@@ -62,7 +70,7 @@ class App extends Component {
             handleInputChange={this.handleInputChange}
             handleSubmit={submitHandler}
           />
-        <TodoList todos={this.state.todos} />
+        <TodoList handleToggle={this.handleToggle} todos={this.state.todos} />
         </div>
       </div>
     );
