@@ -11,6 +11,7 @@ export const TodoList = (props) => (
           id={todo.id}
           isComplete={todo.isComplete}
           name={todo.name}
+          handleRemove={props.handleRemove}
         />
       )}
     </ul>

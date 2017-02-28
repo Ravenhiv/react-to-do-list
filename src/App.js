@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {TodoForm, TodoList} from './components/todo';
-import {addTodo, generateId, findById, toggleTodo, updateTodo} from './libs/todoHelpers';
+import {TodoForm, TodoList, Footer} from './components/todo';
+import {addTodo, generateId, findById, toggleTodo, updateTodo, removeTodo} from './libs/todoHelpers';
 import {pipe, partial} from './libs/utils';
 
 class App extends Component {
@@ -14,6 +14,14 @@ class App extends Component {
       { id: 3, name: 'Ship It!', isComplete: false }
     ],
     currentTodo: ''
+  }
+
+  handleRemove = (id, event) => {
+    event.preventDefault();
+    const updatedTodos = removeTodo(this.state.todos, id);
+    this.setState({
+      todos: updatedTodos
+    });
   }
 
   handleToggle = (id) => {
@@ -70,7 +78,12 @@ class App extends Component {
             handleInputChange={this.handleInputChange}
             handleSubmit={submitHandler}
           />
-        <TodoList handleToggle={this.handleToggle} todos={this.state.todos} />
+        <TodoList
+          handleToggle={this.handleToggle}
+          todos={this.state.todos}
+          handleRemove={this.handleRemove}
+        />
+        <Footer/>
         </div>
       </div>
     );
