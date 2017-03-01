@@ -24,6 +24,7 @@
 }
 
 .todo-app {
+  position: relative;
   padding-top: 20px;
   display: inline-block;
   text-align: left;
@@ -55,7 +56,17 @@ li:hover span.delete-item {
 }
 
 .error {
+  position: absolute;
+  top: 0;
+  left: 0;
   color: red;
+}
+
+.success {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: green;
 }
 
 .footer a {
